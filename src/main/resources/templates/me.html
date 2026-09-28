@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/layout.css">
+    <title>내 정보</title>
+</head>
+<body>
+<main class="column">
+    <h1>내 정보</h1>
+    <dl>
+        <dt>아이디</dt><dd id="login-id" th:text="${account.loginId}">id</dd>
+        <dt>이름</dt><dd id="name" th:text="${account.name}">name</dd>
+        <dt>이메일</dt><dd id="email" th:text="${account.email}">email</dd>
+        <dt>권한</dt><dd id="role" th:text="${account.role}">role</dd>
+        <dt>상태</dt><dd id="status" th:text="${account.status}">status</dd>
+    </dl>
+    <form method="post" th:action="@{/me}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <div class="form-errors" th:if="${errorForm == 'profile'}">
+            <div th:replace="~{fragments :: errors}"></div>
+        </div>
+        <div class="field">
+            <label for="profile-name">이름</label>
+            <input id="profile-name" name="name" th:value="${account.name}">
+        </div>
+        <div class="field">
+            <label for="profile-email">이메일</label>
+            <input id="profile-email" name="email" th:value="${account.email}">
+        </div>
+        <button type="submit">수정</button>
+    </form>
+    <form method="post" th:action="@{/me/password}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <div class="form-errors" th:if="${errorForm == 'password'}">
+            <div th:replace="~{fragments :: errors}"></div>
+        </div>
+        <div class="field">
+            <label for="current-password">현재 비밀번호</label>
+            <input id="current-password" type="password" name="currentPassword">
+        </div>
+        <div class="field">
+            <label for="new-password">새 비밀번호</label>
+            <input id="new-password" type="password" name="newPassword">
+        </div>
+        <button type="submit">비밀번호 변경</button>
+    </form>
+    <form method="post" th:action="@{/me/withdrawal}" novalidate data-confirm="탈퇴하면 이 계정으로 다시 로그인할 수 없습니다. 탈퇴할까요?">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <div class="form-errors" th:if="${errorForm == 'withdrawal'}">
+            <div th:replace="~{fragments :: errors}"></div>
+        </div>
+        <div class="field">
+            <label for="withdrawal-password">현재 비밀번호</label>
+            <input id="withdrawal-password" type="password" name="currentPassword">
+        </div>
+        <button type="submit">회원탈퇴</button>
+    </form>
+    <form method="post" th:action="@{/logout}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <button type="submit">로그아웃</button>
+    </form>
+    <p th:if="${account.role.toString() == 'ADMIN'}"><a href="/admin/users">사용자 목록</a></p>
+    <div th:replace="~{fragments :: notice}"></div>
+    <div th:replace="~{fragments :: confirm}"></div>
+    <script src="/dialogs.js"></script>
+</main>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/layout.css">
+    <title>사용자 상세</title>
+</head>
+<body>
+<main class="column">
+    <h1>사용자 상세</h1>
+    <dl>
+        <dt>아이디</dt><dd id="login-id" th:text="${account.loginId}">id</dd>
+        <dt>이름</dt><dd th:text="${account.name}">name</dd>
+        <dt>이메일</dt><dd th:text="${account.email}">email</dd>
+        <dt>권한</dt><dd id="role" th:text="${account.role}">role</dd>
+        <dt>상태</dt><dd id="status" th:text="${account.status}">status</dd>
+        <dt th:if="${account.withdrawnAt != null}">탈퇴 시각</dt>
+        <dd id="withdrawn-at" th:if="${account.withdrawnAt != null}" th:text="${account.withdrawnAt}">time</dd>
+    </dl>
+    <form method="post" th:action="@{/admin/users/{id}/status(id=${account.loginId})}" novalidate data-confirm="이 사용자의 상태를 변경할까요?">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <div class="form-errors" th:if="${errorForm == 'status'}">
+            <div th:replace="~{fragments :: errors}"></div>
+        </div>
+        <div class="field">
+            <label for="status-choice">상태</label>
+            <select id="status-choice" name="status">
+                <option value="ACTIVE">ACTIVE</option>
+                <option value="INACTIVE">INACTIVE</option>
+            </select>
+        </div>
+        <button type="submit">상태 변경</button>
+    </form>
+    <form method="post" th:action="@{/admin/users/{id}/role(id=${account.loginId})}" novalidate data-confirm="이 사용자의 권한을 변경할까요?">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <div class="form-errors" th:if="${errorForm == 'role'}">
+            <div th:replace="~{fragments :: errors}"></div>
+        </div>
+        <div class="field">
+            <label for="role-choice">권한</label>
+            <select id="role-choice" name="role">
+                <option value="USER">USER</option>
+                <option value="ADMIN">ADMIN</option>
+            </select>
+        </div>
+        <button type="submit">권한 변경</button>
+    </form>
+    <p><a href="/admin/users">목록</a></p>
+    <div th:replace="~{fragments :: notice}"></div>
+    <div th:replace="~{fragments :: confirm}"></div>
+    <script src="/dialogs.js"></script>
+</main>
+</body>
+</html>

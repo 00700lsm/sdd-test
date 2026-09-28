@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="errors" class="errors" th:if="${errors != null and !errors.isEmpty()}">
+    <p class="error" th:each="error : ${errors}" th:text="${error.code}">code</p>
+</div>
+<div th:fragment="notice">
+    <dialog id="notice-dialog" th:if="${notice != null}">
+        <p class="notice" th:text="${notice}">알림</p>
+        <button type="button" id="notice-ok">확인</button>
+    </dialog>
+</div>
+<dialog id="confirm-dialog" th:fragment="confirm">
+    <p id="confirm-message"></p>
+    <button type="button" id="confirm-ok">확인</button>
+    <button type="button" id="confirm-cancel">취소</button>
+</dialog>
+</body>
+</html>

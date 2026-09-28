@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/layout.css">
+    <title>사용자 목록</title>
+</head>
+<body>
+<main class="column">
+    <h1>사용자 목록</h1>
+    <form method="get" th:action="@{/admin/users}">
+        <div class="form-errors" th:if="${errorForm == 'list'}">
+            <div th:replace="~{fragments :: errors}"></div>
+        </div>
+        <input type="hidden" name="page" value="1">
+        <div class="field">
+            <label for="q">검색어</label>
+            <input id="q" name="q" th:value="${q}">
+        </div>
+        <div class="field">
+            <label for="include-withdrawn">탈퇴 포함</label>
+            <input id="include-withdrawn" type="checkbox" name="includeWithdrawn" value="true" th:checked="${includeWithdrawn}">
+        </div>
+        <button type="submit">검색</button>
+    </form>
+    <p id="page-number" th:text="${pageNumber}">1</p>
+    <div class="table-scroll">
+        <table>
+            <thead>
+            <tr>
+                <th>아이디</th>
+                <th>이름</th>
+                <th>이메일</th>
+                <th>권한</th>
+                <th>상태</th>
+                <th>탈퇴 시각</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td class="login-id"><a th:href="@{/admin/users/{id}(id=${user.loginId})}" th:text="${user.loginId}">id</a></td>
+                <td th:text="${user.name}">name</td>
+                <td th:text="${user.email}">email</td>
+                <td th:text="${user.role}">role</td>
+                <td th:text="${user.status}">status</td>
+                <td th:text="${user.withdrawnAt}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <p th:if="${#lists.isEmpty(users)}">결과 없음</p>
+    <a th:if="${hasPrevious}" th:href="@{/admin/users(page=${pageNumber - 1}, q=${q}, includeWithdrawn=${includeWithdrawn})}">이전</a>
+    <a th:if="${hasNext}" th:href="@{/admin/users(page=${pageNumber + 1}, q=${q}, includeWithdrawn=${includeWithdrawn})}">다음</a>
+    <p><a href="/me">내 정보</a></p>
+</main>
+</body>
+</html>

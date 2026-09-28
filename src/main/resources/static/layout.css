@@ -1,0 +1,67 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+main.column {
+    width: 100%;
+    max-width: 640px;
+    margin-inline: auto;
+    padding: 1rem;
+}
+
+.field {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: 100%;
+}
+
+.field input,
+.field select {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 100%;
+}
+
+form button {
+    display: block;
+    margin-top: 0.75rem;
+}
+
+.errors {
+    display: block;
+}
+
+.error {
+    display: block;
+}
+
+.table-scroll {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+.table-scroll table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-scroll td,
+.table-scroll th {
+    overflow-wrap: anywhere;
+}
+
+dialog {
+    max-width: calc(100% - 2rem);
+}
+
+dialog button {
+    display: block;
+}

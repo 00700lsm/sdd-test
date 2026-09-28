@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/layout.css">
+    <title>회원가입</title>
+</head>
+<body>
+<main class="column">
+    <h1>회원가입</h1>
+    <form method="post" th:action="@{/signup}" th:object="${signup}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <div th:replace="~{fragments :: errors}"></div>
+        <div class="field">
+            <label for="login-id">아이디</label>
+            <input id="login-id" name="loginId" th:value="*{loginId}">
+        </div>
+        <div class="field">
+            <label for="password">비밀번호</label>
+            <input id="password" type="password" name="password">
+        </div>
+        <div class="field">
+            <label for="name">이름</label>
+            <input id="name" name="name" th:value="*{name}">
+        </div>
+        <div class="field">
+            <label for="email">이메일</label>
+            <input id="email" name="email" th:value="*{email}">
+        </div>
+        <button type="submit">가입</button>
+    </form>
+    <p><a href="/login">로그인</a></p>
+</main>
+</body>
+</html>
