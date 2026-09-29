@@ -15,7 +15,7 @@ SI/SM 환경에서 Spec-Driven Development(SDD)를 적용할 수 있는지 검�
 
 ## SDD 프로세스
 
-앞으로 가는 단계는 산출물을 남기는 순서다. 요구가 비거나, 구현 중에 빠지거나, 기능이 끝나면 Spec으로 돌아와 같은 사이클을 다시 돈다. Constitution은 사이클 밖에 있고, 기능이 바뀌어도 기준으로 남는다.
+앞으로 가는 순서는 Specify, Clarify, Plan, Tasks, Implement, Converge다. Clarify는 Spec에 답을 적은 뒤 Plan으로 간다. 요구가 비거나, 구현 중에 빠지거나, 기능이 끝나면 Specify로 돌아온 뒤 다시 Clarify를 거쳐 Plan으로 간다. Constitution은 사이클 밖에 있고, 기능이 바뀌어도 기준으로 남는다.
 
 ```mermaid
 flowchart TD
@@ -27,9 +27,7 @@ flowchart TD
   implement[Implement]
   converge[Converge]
 
-  constitution --> specify
-  specify --> plan --> tasks --> implement --> converge
-  specify <-->|해석이 갈리면 질문하고 Spec에 반영| clarify
+  constitution --> specify --> clarify --> plan --> tasks --> implement --> converge
   plan -->|설계가 요구와 어긋남| specify
   implement -->|구현 중 발견된 요구 변경| specify
   converge -->|남은 작업| tasks
