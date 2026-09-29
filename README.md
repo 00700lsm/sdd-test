@@ -15,10 +15,10 @@ SI/SM 환경에서 Spec-Driven Development(SDD)를 적용할 수 있는지 검�
 
 ## SDD 프로세스
 
-한 기능은 아래 순서로 진행한다. 각 단계는 사람이 명령을 실행할 때 시작하고, 이전 단계의 파일을 다음 단계의 입력으로 쓴다.
+앞으로 가는 단계는 산출물을 남기는 순서다. 요구가 비거나, 구현 중에 빠지거나, 기능이 끝나면 Spec으로 돌아와 같은 사이클을 다시 돈다. Constitution은 사이클 밖에 있고, 기능이 바뀌어도 기준으로 남는다.
 
 ```mermaid
-flowchart LR
+flowchart TD
   constitution[Constitution]
   specify[Specify]
   clarify[Clarify]
@@ -26,7 +26,14 @@ flowchart LR
   tasks[Tasks]
   implement[Implement]
   converge[Converge]
-  constitution --> specify --> clarify --> plan --> tasks --> implement --> converge
+
+  constitution --> specify
+  specify --> plan --> tasks --> implement --> converge
+  specify <-->|해석이 갈리면 질문하고 Spec에 반영| clarify
+  plan -->|설계가 요구와 어긋남| specify
+  implement -->|구현 중 발견된 요구 변경| specify
+  converge -->|남은 작업| tasks
+  converge -->|다음 기능의 Spec| specify
 ```
 
 | 단계 | 하는 일 | 남기는 산출물 |
@@ -39,12 +46,12 @@ flowchart LR
 | Implement | `tasks.md` 순서대로 구현한다. 해당 테스트가 통과해야 작업을 마친다. | 코드, 테스트 |
 | Converge | 코드가 스펙·계획·작업과 맞는지 보고, 남은 작업만 `tasks.md`에 추가한다. | 필요 시 `tasks.md` |
 
-품질 확인은 이 순서 사이에 둔다.
+품질 확인도 앞으로만 가지 않는다.
 
-- Checklist는 요구 문장이 검토 가능한지 확인한다. 구현 완료 표시가 아니다.
-- Analyze는 `spec.md`, `plan.md`, `tasks.md` 사이의 불일치를 본다. 코드를 고치지 않는다.
+- Checklist는 요구 문장이 검토 가능한지 본다. 부족하면 Specify로 돌아간다. 구현 완료 표시가 아니다.
+- Analyze는 `spec.md`, `plan.md`, `tasks.md`의 불일치를 본다. 고칠 곳은 코드가 아니라 해당 문서다.
 
-작업 순서는 요구 정의, Spec, 설계, 작업 분해, 구현, 테스트다. 완료는 Spec 항목과 구현과 테스트가 연결되고, 관련 테스트가 통과한 상태다.
+완료는 Spec 항목과 구현과 테스트가 연결되고, 관련 테스트가 통과한 상태다.
 
 ## 이번 PoC에서 반복한 방식
 

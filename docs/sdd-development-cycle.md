@@ -2,16 +2,26 @@
 
 핵심 기능부터 세부 보완, UI/디자인까지 반복적으로 Spec을 확장하는 흐름
 
+한 사이클 안에서는 Verify가 Specify로 돌아온다. 사이클이 끝나면 다음 범위의 Spec으로 같은 순환을 다시 시작한다.
+
 ```mermaid
-flowchart LR
+flowchart TD
+  Specify --> Plan --> Develop --> Verify
+  Develop -->|기능별 반복 구현| Develop
+  Verify -->|누락, 예외, 모호한 요구를 Spec에 반영| Specify
+```
+
+```mermaid
+flowchart TD
+  Constitution[Constitution]
   C1["1차 사이클<br/>핵심 기능 Backend Spec"]
   C2["2차 사이클<br/>세부 기능 보완 Refinement Spec"]
   C3["3차 사이클<br/>UI/디자인 UI/UX Spec"]
-  C1 -->|"구현 결과 기반 Spec 보완<br/>개발 중 발견된 누락, 예외 케이스를 모호한 부분만 다시 Spec에 반영"| C2
-  C2 -->|"기능 안정화 후 UI/UX 요구 반영<br/>기능이 안정화된 후 화면 구성, 사용자 경험을 별도 Spec으로 확장"| C3
+  Constitution --> C1
+  C1 -->|"구현 결과 기반 Spec 보완<br/>개발 중 발견된 누락, 예외, 모호한 부분을 다시 Spec에 반영"| C2
+  C2 -->|"기능 완료 후 UI/UX 요구 반영<br/>기능이 안정화된 후 화면 구성, 사용자 경험을 별도 Spec으로 확장"| C3
+  C3 -->|이후 변경도 새 Spec 사이클| C1
 ```
-
-각 사이클은 Specify, Plan, Develop, Verify 순서로 진행한다.
 
 ## 1차 사이클: 핵심 기능 (Backend Spec)
 
@@ -104,13 +114,16 @@ flowchart LR
 ## 전체 산출물 구조 (Spec 간 관계)
 
 ```mermaid
-flowchart LR
+flowchart TD
   Constitution["Constitution<br/>프로젝트 원칙"]
   Spec1["Spec #1 핵심 기능"]
   Spec2["Spec #2 세부 보완"]
   Spec3["Spec #3 UI/UX"]
   Final["최종 통합 산출물"]
-  Constitution --> Spec1 --> Spec2 --> Spec3 --> Final
+  Constitution --> Spec1
+  Spec1 --> Spec2 --> Spec3 --> Final
+  Spec2 -->|기존 FR 보완| Spec1
+  Final -->|코드와 Spec을 다시 맞춤| Spec1
 ```
 
 | 산출물 | 역할 |
